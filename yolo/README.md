@@ -23,6 +23,18 @@ jetson-Xavier   | trt-yolo-app |   DS 3.0    | Jetpack 4.1 (Cuda 10.0, TensorRT 
 
 NvYolo is an inference plugin similar nvinfer in the DeepStream SDK. We make use of cmake to build all the plugins and apps in this project.
 
+**First, change the line 49 on /home/nvidia/deepstream_reference_apps/yolo/lib/ds_image.cpp as follows:**
+
+```cpp
+m_OrigImage = cv::imread(path, CV_LOAD_IMAGE_COLOR);
+```
+to
+
+```cpp
+m_OrigImage = cv::imread(path, cv::IMREAD_COLOR);
+```
+
+
 For dGPU's,   
     Set the DS_SDK_ROOT variable to point to your DeepStream SDK Root. There is also an option of using custom build paths for TensorRT(-D TRT_SDK_ROOT)and OpenCV(-D OPENCV_ROOT). These are optional and not required if the libraries have already been installed.
 
@@ -55,6 +67,9 @@ The deepStream-yolo-app located at `apps/deepstream_yolo` is a sample app simila
 `$ make && sudo make install`   
 `$ cd ../../../`   
 `$ deepstream-yolo-app <Platform-Telsa/Tegra> <H264 filename> <yolo-plugin config file>`
+
+**For example:**
+`$ deepstream-yolo-app Tegra '<DS SDK Root>/samples/streams/sample_720p.h264' '/home/nvidia/deepstream_reference_apps/config/yolov3-tiny.txt'`
 
 Refer to sample config files `yolov2.txt`, `yolov2-tiny.txt`, `yolov3.txt` and `yolov3-tiny.txt` in `config/` directory.
 
